@@ -1,0 +1,35 @@
+app:
+  name: "web_app"
+  mode: "dev"
+  port: 8081
+
+log:
+  level: "debug"
+  file_name: "log"
+  max_size: 200
+  max_age: 30
+  max_backups: 7
+
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: "mysqluser"
+  db_name: "fyouku"
+  max_open_conns: 100
+  max_idle_conns: 10
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  db: 0
+
+snowflake:
+  start_time: "2022-10-28"
+  machine_id: 1
+
+encrypt:
+  secret: "ybzdqhl"
+
+jwtInfo:
+  signingKey: "EscCRBIz0FWNPNJ#*HUPHbXxyVSFLhXH"

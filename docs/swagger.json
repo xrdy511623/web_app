@@ -1,0 +1,209 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "go web framework demo",
+        "title": "web_app",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "qiujun@sina.com",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8081",
+    "basePath": "/",
+    "paths": {
+        "/user/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "可分页查询用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "用户信息列表接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page_num",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserListReply"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "用户通过手机号和密码登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "用户登录接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 20,
+                        "minLength": 6,
+                        "type": "string",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.LoginReply"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/register": {
+            "post": {
+                "description": "用户填写用户名，手机号，密码并确认密码无误即可注册",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "用户注册接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "手机号，必填",
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 20,
+                        "minLength": 6,
+                        "type": "string",
+                        "description": "密码，长度范围6到20位",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 20,
+                        "minLength": 6,
+                        "type": "string",
+                        "description": "确认密码，必须与密码一致",
+                        "name": "re_password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名，必填",
+                        "name": "user_name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controller.LoginReply": {
+            "type": "object",
+            "properties": {
+                "expired_at": {
+                    "description": "token失效时间",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "用户id",
+                    "type": "integer"
+                },
+                "token": {
+                    "description": "颁发的token",
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserListReply": {
+            "type": "object",
+            "properties": {
+                "add_time": {
+                    "description": "注册时间",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "用户id",
+                    "type": "integer"
+                },
+                "mobile": {
+                    "description": "用户手机号",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "用户名",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "用户状态",
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
