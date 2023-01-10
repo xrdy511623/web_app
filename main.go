@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"syscall"
 	"web_app/dao/mysql"
+	"web_app/dao/redis"
 	"web_app/logger"
 	"web_app/pkg"
 	"web_app/routes"
@@ -57,6 +58,12 @@ func main() {
 	}
 	defer mysql.Close()
 	// 初始化Redis连接
+	if err := redis.InitRedis(); err != nil {
+		fmt.Printf("init redis failed, err:%v\n", err)
+		zap.L().Error("init redis connection failed, err:%v", zap.Error(err))
+		return
+	}
+	defer redis.Close()
 	// 4 初始化翻译
 	if err := validators.InitTrans("zh"); err != nil {
 		zap.L().Error("init validator failed, err:%v", zap.Error(err))
